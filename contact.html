@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Peter Damah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i> Peter | DevOps & Academia
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="planner.html">Academic Planner</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="contact-container card">
+            <h1>Get in Touch</h1>
+            <p>Fill out the formal validation form below to drop an inquiry or project assigment opportunity.</p>
+
+            <div id="formFeedback" class="feedback-box hidden"></div>
+
+    <form action="https://formspree.io/f/xjyyllrv"
+    method="POST"
+>
+    <label>
+    Your email:
+        <input type="email" name="email">
+    </label>
+    <label>
+    Your message:
+        <textarea name="message"></textarea>
+    </label>
+    <button type="submit">Send</button>
+    </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peter Yohanna Damah | Miva Open University COS 106 Project.</p>
+    </footer>
+
+    <script src="contact.js"></script>
+</body>
+</html>
