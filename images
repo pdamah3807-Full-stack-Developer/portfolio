@@ -1,4 +1,0 @@
-git status
-git add images/img-20261017-wa0057.jpg
-git commit -m "Add profile image"
-git push origin main
