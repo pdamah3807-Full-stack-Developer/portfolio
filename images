@@ -1,1 +1,4 @@
-
+git status
+git add images/
+git commit -m "Add profile image"
+git push origin main
