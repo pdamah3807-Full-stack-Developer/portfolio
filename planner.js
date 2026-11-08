@@ -122,23 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTasks();
     }
 
-    // Tasks
-    function renderTasks() {
-        taskList.innerHTML = "";
-        const items = tasks[selectedDate] || [];
-
-        // Inside your render function in planner.js:
-taskList.innerHTML = schedulesForDate.map(item => `
-    <li class="task-item">
-        <div class="task-info">
-            <span class="task-time"><i class="fa-regular fa-clock"></i> ${item.time}</span>
-            <span class="badge ${item.category.toLowerCase().replace(/\s+/g, '-')}">${item.category}</span>
-            <p class="task-desc">${item.description}</p>
-        </div>
-        <button onclick="deleteSchedule('${item.id}')" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-    </li>
-`).join('');
-
         if (items.length === 0) {
             const empty = document.createElement("li");
             empty.textContent = "No items scheduled for this date.";
