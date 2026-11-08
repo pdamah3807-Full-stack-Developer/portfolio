@@ -17,7 +17,6 @@
     --nav-height: 72px;
 }
 
-/* ---------- Reset & base ---------- */
 *,
 *::before,
 *::after {
@@ -62,7 +61,6 @@ h1, h2, h3 {
     outline-offset: 3px;
 }
 
-/* ---------- Header / navigation ---------- */
 header {
     background-color: var(--navy-900);
     position: sticky;
@@ -127,7 +125,6 @@ header {
     font-weight: 600;
 }
 
-/* ---------- Home page (hero) ---------- */
 .main-content {
     flex: 1;
     display: flex;
@@ -238,7 +235,6 @@ header {
     background-color: var(--line);
 }
 
-/* ---------- Inner pages (About, etc.) ---------- */
 .content-wrapper {
     flex: 1;
     width: 100%;
@@ -279,7 +275,7 @@ header {
 
 .card p {
     color: var(--ink-soft);
-    overflow-wrap: anywhere;   /* keeps long emails from overflowing */
+    overflow-wrap: anywhere;   
 }
 
 .card strong {
@@ -295,7 +291,6 @@ header {
     margin: 3rem 0 1rem;
 }
 
-/* ---------- Skills table ---------- */
 .skills-table {
     width: 100%;
     border-collapse: collapse;
@@ -336,8 +331,7 @@ header {
     color: var(--navy-700);
 }
 
-/* ---------- Hobbies ---------- */
-.standard-marging,      /* matches the spelling used in the HTML */
+.standard-marging,      
 .standard-margin {
     margin-top: 2.5rem;
 }
@@ -366,9 +360,6 @@ header {
     border-radius: 50%;
 }
 
-/* ==========================================================
-   PROJECTS PAGE
-   ========================================================== */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -389,8 +380,8 @@ header {
     width: 100%;
     aspect-ratio: 16 / 10;
     object-fit: cover;
-    background-color: var(--navy-700);   /* shows if the image fails to load */
-    color: #c9d4e2;                      /* alt text colour on that background */
+    background-color: var(--navy-700);   
+    color: #c9d4e2;                      
     font-size: 0.9rem;
 }
 
@@ -442,9 +433,6 @@ header {
     background-color: #000;
 }
 
-/* ==========================================================
-   ACADEMIC PLANNER PAGE
-   ========================================================== */
 .planner-wrapper {
     flex: 1;
     padding: 3rem 1.5rem 4rem;
@@ -532,7 +520,6 @@ header {
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-/* Task panel */
 .task-header {
     margin-bottom: 1.5rem;
 }
@@ -633,9 +620,6 @@ header {
     color: #ffffff;
 }
 
-/* ==========================================================
-   CONTACT PAGE
-   ========================================================== */
 .contact-container {
     max-width: 720px;
     margin: 0 auto;
@@ -714,7 +698,6 @@ header {
     display: none !important;
 }
 
-/* ---------- Footer ---------- */
 footer {
     background-color: var(--navy-900);
     color: #aebbd0;
@@ -724,7 +707,6 @@ footer {
     border-top: 4px solid var(--gold-500);
 }
 
-/* ---------- Tablet ---------- */
 @media (max-width: 900px) {
     .hero-container {
         grid-template-columns: 1fr;
@@ -733,7 +715,7 @@ footer {
     }
 
     .hero-image-box {
-        order: -1;              /* photo above text on small screens */
+        order: -1;             
     }
 
     .profile-img {
@@ -750,7 +732,6 @@ footer {
     }
 }
 
-/* ---------- Mobile ---------- */
 @media (max-width: 700px) {
     .navbar {
         flex-direction: column;
@@ -786,7 +767,6 @@ footer {
     }
 }
 
-/* ---------- Respect reduced-motion preference ---------- */
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;
@@ -794,7 +774,6 @@ footer {
     }
 }
 
-/* ---------- Planner & projects: smaller screens ---------- */
 @media (max-width: 900px) {
     .planner-wrapper .container {
         grid-template-columns: 1fr;
