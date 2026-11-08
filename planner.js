@@ -1,208 +1,246 @@
-// /* Academic Planner | planner.js (functionality only, no styling) */
+// Academic Planner | planner.js
+const STORAGE_KEY = "academicPlannerTasks";
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-document.addEventListener("DOMContentLoaded", () => {
-    const monthYearDisplay = document.getElementById("monthYearDisplay");
-    const calendarDays = document.getElementById("calendarDays");
-    const selectedDateTitle = document.getElementById("selectedDateTitle");
-    const scheduleDate = document.getElementById("scheduleDate");
-    const activityCategory = document.getElementById("activityCategory");
-    const taskInput = document.getElementById("taskInput");
-    const addTaskButton = document.getElementById("addTaskButton");
-    const taskList = document.getElementById("taskList");
+let tasks = loadTasks();
+const today = new Date();
+let viewYear = today.getFullYear();
+let viewMonth = today.getMonth();
+let selectedDate = formatDate(today);
 
-    const STORAGE_KEY = "academicPlannerTasks";
-    const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
+// DOM Elements
+const monthYearDisplay = document.getElementById("monthYearDisplay");
+const calendarDays = document.getElementById("calendarDays");
+const selectedDateTitle = document.getElementById("selectedDateTitle");
+const scheduleDateInput = document.getElementById("scheduleDate");
+const scheduleTimeInput = document.getElementById("scheduleTime");
+const activityCategorySelect = document.getElementById("activityCategory");
+const taskInput = document.getElementById("taskInput");
+const addTaskButton = document.getElementById("addTaskButton");
+const taskList = document.getElementById("taskList");
+const listHeading = document.getElementById("listHeading");
 
-    let tasks = loadTasks();
-    const today = new Date();
-    let viewYear = today.getFullYear();
-    let viewMonth = today.getMonth();
-    let selectedDate = formatDate(today);
+// Initialize Application
+function init() {
+    scheduleDateInput.value = selectedDate;
+    updateSelectedDateDisplay(selectedDate);
+    renderCalendar();
+    renderTasks();
 
-    function formatDate(date) {
-        const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, "0");
-        const d = String(date.getDate()).padStart(2, "0");
-        return `${y}-${m}-${d}`;
-    }
-
-    function parseDate(str) {
-        const [y, m, d] = str.split("-").map(Number);
-        return new Date(y, m - 1, d);
-    }
-
-    function prettyDate(str) {
-        return parseDate(str).toLocaleDateString("en-GB", {
-            weekday: "long", day: "numeric", month: "long", year: "numeric"
-        });
-    }
-
-    function loadTasks() {
-        try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-        } catch (error) {
-            return {};
-        }
-    }
-
-    function saveTasks() {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-        } catch (error) {
-            console.error("Could not save tasks:", error);
-        }
-    }
-
-    // Calendar (plain table so it lays out in 7 columns without any CSS)
-    function renderCalendar() {
-        monthYearDisplay.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
-        calendarDays.innerHTML = "";
-
-        const table = document.createElement("table");
-        const headRow = document.createElement("tr");
-        DAY_NAMES.forEach((name) => {
-            const th = document.createElement("th");
-            th.textContent = name;
-            headRow.appendChild(th);
-        });
-        table.appendChild(headRow);
-
-        const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
-        const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
-        const todayStr = formatDate(today);
-
-        let row = document.createElement("tr");
-        for (let i = 0; i < firstDayIndex; i++) {
-            row.appendChild(document.createElement("td"));
-        }
-
-        for (let day = 1; day <= totalDays; day++) {
-            if (row.children.length === 7) {
-                table.appendChild(row);
-                row = document.createElement("tr");
-            }
-
-            const dateStr = formatDate(new Date(viewYear, viewMonth, day));
-            const count = tasks[dateStr] ? tasks[dateStr].length : 0;
-
-            let label = String(day);
-            if (count > 0) label += " •";
-            if (dateStr === selectedDate) label = `[${label}]`;
-
-            const button = document.createElement("button");
-            button.type = "button";
-            button.textContent = label;
-            button.title = (dateStr === todayStr ? "Today. " : "") +
-                (count > 0 ? `${count} scheduled item(s)` : "No items");
-            button.setAttribute("aria-pressed", dateStr === selectedDate ? "true" : "false");
-            button.addEventListener("click", () => selectDate(dateStr));
-
-            const td = document.createElement("td");
-            td.appendChild(button);
-            row.appendChild(td);
-        }
-
-        while (row.children.length < 7) {
-            row.appendChild(document.createElement("td"));
-        }
-        table.appendChild(row);
-        calendarDays.appendChild(table);
-    }
-
-    function selectDate(dateStr) {
-        selectedDate = dateStr;
-        scheduleDate.value = dateStr;
-        const date = parseDate(dateStr);
-        viewYear = date.getFullYear();
-        viewMonth = date.getMonth();
-        selectedDateTitle.textContent = prettyDate(dateStr);
-        renderCalendar();
+    addTaskButton.addEventListener("click", handleAddSchedule);
+    scheduleDateInput.addEventListener("change", (e) => {
+        selectedDate = e.target.value;
+        updateSelectedDateDisplay(selectedDate);
         renderTasks();
+    });
+}
+
+function formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+function parseDate(str) {
+    const [y, m, d] = str.split("-").map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function prettyDate(str) {
+    if (!str) return "Select a Date";
+    return parseDate(str).toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+function loadTasks() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch (error) {
+        return {};
+    }
+}
+
+function saveTasks() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    } catch (error) {
+        console.error("Could not save schedules:", error);
+    }
+}
+
+function updateSelectedDateDisplay(dateStr) {
+    selectedDateTitle.textContent = prettyDate(dateStr);
+    listHeading.textContent = `Scheduled Items for ${prettyDate(dateStr)}`;
+}
+
+// Calendar Generation
+function renderCalendar() {
+    monthYearDisplay.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
+    calendarDays.innerHTML = "";
+
+    const table = document.createElement("table");
+    const headRow = document.createElement("tr");
+    
+    DAY_NAMES.forEach((name) => {
+        const th = document.createElement("th");
+        th.textContent = name;
+        headRow.appendChild(th);
+    });
+    table.appendChild(headRow);
+
+    const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
+    const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const todayStr = formatDate(today);
+
+    let row = document.createElement("tr");
+
+    for (let i = 0; i < firstDayIndex; i++) {
+        row.appendChild(document.createElement("td"));
     }
 
-        if (items.length === 0) {
-            const empty = document.createElement("li");
-            empty.textContent = "No items scheduled for this date.";
-            taskList.appendChild(empty);
-            return;
+    for (let day = 1; day <= totalDays; day++) {
+        if (row.children.length === 7) {
+            table.appendChild(row);
+            row = document.createElement("tr");
         }
 
-        items.forEach((task) => {
-            const li = document.createElement("li");
+        const td = document.createElement("td");
+        const mStr = String(viewMonth + 1).padStart(2, "0");
+        const dStr = String(day).padStart(2, "0");
+        const currentCellDate = `${viewYear}-${mStr}-${dStr}`;
 
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = task.done;
-            checkbox.addEventListener("change", () => toggleTask(task.id));
+        td.textContent = day;
 
-            const text = document.createElement("span");
-            text.textContent = ` ${task.category}: ${task.text} `;
-            if (task.done) text.style.textDecoration = "line-through";
-
-            const deleteBtn = document.createElement("button");
-            deleteBtn.type = "button";
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => deleteTask(task.id));
-
-            li.append(checkbox, text, deleteBtn);
-            taskList.appendChild(li);
-        });
-    }
-
-    function addTask() {
-        const text = taskInput.value.trim();
-        const date = scheduleDate.value || selectedDate;
-
-        if (!date) {
-            alert("Please select a date.");
-            return;
-        }
-        if (!text) {
-            alert("Please enter an activity description.");
-            taskInput.focus();
-            return;
+        if (currentCellDate === todayStr) {
+            td.classList.add("today");
         }
 
-        if (!tasks[date]) tasks[date] = [];
-        tasks[date].push({
-            id: Date.now().toString(),
-            category: activityCategory.value,
-            text: text,
-            done: false
-        });
+        if (currentCellDate === selectedDate) {
+            td.classList.add("selected");
+        }
 
-        saveTasks();
-        taskInput.value = "";
-        selectDate(date);
-        taskInput.focus();
-    }
+        // Indicator dot if schedules exist on this date
+        if (tasks[currentCellDate] && tasks[currentCellDate].length > 0) {
+            const dot = document.createElement("span");
+            dot.className = "schedule-dot";
+            td.appendChild(dot);
+        }
 
-    function toggleTask(id) {
-        const task = (tasks[selectedDate] || []).find((t) => t.id === id);
-        if (task) {
-            task.done = !task.done;
-            saveTasks();
+        td.addEventListener("click", () => {
+            selectedDate = currentCellDate;
+            scheduleDateInput.value = selectedDate;
+            updateSelectedDateDisplay(selectedDate);
+            renderCalendar();
             renderTasks();
-        }
+        });
+
+        row.appendChild(td);
     }
 
-    function deleteTask(id) {
-        tasks[selectedDate] = (tasks[selectedDate] || []).filter((t) => t.id !== id);
-        if (tasks[selectedDate].length === 0) delete tasks[selectedDate];
-        saveTasks();
-        renderCalendar();
-        renderTasks();
+    // Fill remaining cells in the final row
+    while (row.children.length < 7 && row.children.length > 0) {
+        row.appendChild(document.createElement("td"));
+    }
+    table.appendChild(row);
+
+    calendarDays.appendChild(table);
+}
+
+// Add Schedule Handler
+function handleAddSchedule() {
+    const dateVal = scheduleDateInput.value;
+    const timeVal = scheduleTimeInput.value || "All Day";
+    const categoryVal = activityCategorySelect.value;
+    const descVal = taskInput.value.trim();
+
+    if (!dateVal) {
+        alert("Please select a date for the schedule.");
+        return;
     }
 
-    addTaskButton.addEventListener("click", addTask);
-    taskInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") addTask();
-    });
-    scheduleDate.addEventListener("change", () => {
-        if (scheduleDate.value) selectDate(scheduleDate.value);
-    });
+    if (!descVal) {
+        alert("Please enter an activity description.");
+        return;
+    }
 
-    selectDate(selectedDate);
-});
+    const newSchedule = {
+        id: "_" + Math.random().toString(36).substr(2, 9),
+        time: timeVal,
+        category: categoryVal,
+        description: descVal
+    };
+
+    if (!tasks[dateVal]) {
+        tasks[dateVal] = [];
+    }
+
+    tasks[dateVal].push(newSchedule);
+    saveTasks();
+
+    // Reset inputs
+    taskInput.value = "";
+    scheduleTimeInput.value = "";
+
+    selectedDate = dateVal;
+    updateSelectedDateDisplay(selectedDate);
+    renderCalendar();
+    renderTasks();
+}
+
+// Delete Schedule Handler
+window.deleteSchedule = function(id) {
+    if (!tasks[selectedDate]) return;
+
+    tasks[selectedDate] = tasks[selectedDate].filter(item => item.id !== id);
+
+    if (tasks[selectedDate].length === 0) {
+        delete tasks[selectedDate];
+    }
+
+    saveTasks();
+    renderCalendar();
+    renderTasks();
+};
+
+// Render Task / Schedule List with All Details
+function renderTasks() {
+    taskList.innerHTML = "";
+    const schedulesForDate = tasks[selectedDate] || [];
+
+    if (schedulesForDate.length === 0) {
+        taskList.innerHTML = `<li class="empty-message">No schedules recorded for this date.</li>`;
+        return;
+    }
+
+    schedulesForDate.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+
+        // Generate badge class compatible with category styling
+        const categoryClass = item.category.toLowerCase().replace(/\s+/g, '-');
+
+        li.innerHTML = `
+            <div class="task-info">
+                <div class="task-meta">
+                    <span class="task-time"><i class="fa-regular fa-clock"></i> ${item.time}</span>
+                    <span class="badge ${categoryClass}">${item.category}</span>
+                </div>
+                <p class="task-desc">${item.description}</p>
+            </div>
+            <button onclick="deleteSchedule('${item.id}')" class="delete-btn" title="Delete Schedule">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        `;
+
+        taskList.appendChild(li);
+    });
+}
+
+// Run init on DOM load
+document.addEventListener("DOMContentLoaded", init);
