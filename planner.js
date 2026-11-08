@@ -1,4 +1,3 @@
-// Academic Planner | planner.js
 const STORAGE_KEY = "academicPlannerTasks";
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -9,7 +8,6 @@ let viewYear = today.getFullYear();
 let viewMonth = today.getMonth();
 let selectedDate = formatDate(today);
 
-// DOM Elements
 const monthYearDisplay = document.getElementById("monthYearDisplay");
 const calendarDays = document.getElementById("calendarDays");
 const selectedDateTitle = document.getElementById("selectedDateTitle");
@@ -21,7 +19,6 @@ const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 const listHeading = document.getElementById("listHeading");
 
-// Initialize Application
 function init() {
     scheduleDateInput.value = selectedDate;
     updateSelectedDateDisplay(selectedDate);
@@ -79,7 +76,6 @@ function updateSelectedDateDisplay(dateStr) {
     listHeading.textContent = `Scheduled Items for ${prettyDate(dateStr)}`;
 }
 
-// Calendar Generation
 function renderCalendar() {
     monthYearDisplay.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
     calendarDays.innerHTML = "";
@@ -143,7 +139,6 @@ function renderCalendar() {
         row.appendChild(td);
     }
 
-    // Fill remaining cells in the final row
     while (row.children.length < 7 && row.children.length > 0) {
         row.appendChild(document.createElement("td"));
     }
@@ -152,7 +147,6 @@ function renderCalendar() {
     calendarDays.appendChild(table);
 }
 
-// Add Schedule Handler
 function handleAddSchedule() {
     const dateVal = scheduleDateInput.value;
     const timeVal = scheduleTimeInput.value || "All Day";
@@ -183,7 +177,6 @@ function handleAddSchedule() {
     tasks[dateVal].push(newSchedule);
     saveTasks();
 
-    // Reset inputs
     taskInput.value = "";
     scheduleTimeInput.value = "";
 
@@ -193,7 +186,6 @@ function handleAddSchedule() {
     renderTasks();
 }
 
-// Delete Schedule Handler
 window.deleteSchedule = function(id) {
     if (!tasks[selectedDate]) return;
 
@@ -208,7 +200,6 @@ window.deleteSchedule = function(id) {
     renderTasks();
 };
 
-// Render Task / Schedule List with All Details
 function renderTasks() {
     taskList.innerHTML = "";
     const schedulesForDate = tasks[selectedDate] || [];
@@ -222,7 +213,6 @@ function renderTasks() {
         const li = document.createElement("li");
         li.className = "task-item";
 
-        // Generate badge class compatible with category styling
         const categoryClass = item.category.toLowerCase().replace(/\s+/g, '-');
 
         li.innerHTML = `
@@ -242,5 +232,4 @@ function renderTasks() {
     });
 }
 
-// Run init on DOM load
 document.addEventListener("DOMContentLoaded", init);
