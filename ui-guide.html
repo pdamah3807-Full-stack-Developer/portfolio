@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio UI Guide</title>
+  <style>
+    :root {
+      --navy: #0d1f36;
+      --gold: #e3a72f;
+      --light: #f4f6fa;
+      --surface: #ffffff;
+      --ink: #1c2733;
+      --muted: #52606f;
+      --line: #dbe2ea;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 40px 50px 60px;
+    }
+
+    h1, h2, h3 {
+      color: var(--navy);
+      margin-top: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      border-bottom: 4px solid var(--gold);
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .wireframe {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 18px 0 26px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 28px;
+      margin-top: 10px;
+      align-items: start;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--gold);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+    }
+
+    .card p { margin: 0; color: var(--muted); }
+
+    .label {
+      display: inline-block;
+      background: #fff3d6;
+      color: var(--navy);
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: 2px solid var(--navy);
+      display: inline-block;
+    }
+
+    .btn.primary { background: var(--navy); color: white; }
+    .btn.secondary { background: transparent; color: var(--navy); }
+
+    .footer-note {
+      margin-top: 30px;
+      padding-top: 14px;
+      border-top: 2px solid var(--gold);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media print {
+      body { background: white; }
+      .page {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        max-width: none;
+        padding: 0.5in;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Portfolio User Interface Guide</h1>
+    <div class="subtitle">Portfolio website for Peter Yohanna Damah — Home page walkthrough and section explanation</div>
+
+    <h2>1. Expected homepage layout</h2>
+    <div class="wireframe">+--------------------------------------------------------------+
+| Header / Navbar                                              |
+| [Peter | DevOps & Academia]   Home  About Me  Projects       |
+|                            Academic Planner   Contact         |
++--------------------------------------------------------------+
+| Hero Section                                                  |
+| [Software Engineering Student]                               |
+| My Digital Space                                              |
+| Peter Yohanna Damah                                           |
+| A Software Engineering Student at Miva Open University...    |
+| [View My Projects]   [Get In Touch]                           |
+|                           [Profile Photo]                     |
++--------------------------------------------------------------+
+| Footer                                                        |
+| © 2026 Peter Yohanna Damah | Miva Open University            |
++--------------------------------------------------------------+</div>
+
+    <div class="layout-grid">
+      <div>
+        <div class="card">
+          <div class="label">Header / Navbar</div>
+          <p>The top navigation bar uses a dark navy background and contains the portfolio logo on the left and the page links on the right. It helps the user move between Home, About Me, Projects, Academic Planner, and Contact.</p>
+        </div>
+
+        <div class="card">
+          <div class="label">Hero Section</div>
+          <p>This is the first visible section on the homepage. It introduces the owner, the role, and the purpose of the portfolio. The heading “My Digital Space” and the name “Peter Yohanna Damah” create a personal identity.</p>
+        </div>
+
+        <div class="card">
+          <div class="label">Call-to-Action Buttons</div>
+          <p>Two action buttons are included: “View My Projects” and “Get In Touch.” These buttons guide the user to the main content and encourage communication or exploration.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="label">Profile Image</div>
+          <p>The image is placed on the right within a circular frame, with a gold border and shadow. This makes the portfolio feel more personal and visually appealing.</p>
+        </div>
+
+        <div class="card">
+          <div class="label">Footer</div>
+          <p>The footer is dark navy with a gold line on top. It contains the copyright information and keeps the page looking finished and professional.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>2. Detailed explanation of each section</h2>
+
+    <div class="card">
+      <div class="label">1. Header</div>
+      <p>The header is created using the <strong>header</strong> and <strong>nav.navbar</strong> elements. The styling sets a dark background and sticky positioning so it remains visible while scrolling. The logo and navigation links are aligned horizontally and wrapped responsively for smaller screens.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">2. Logo</div>
+      <p>The logo text reads “Peter | DevOps & Academia” and uses a serif-like heading font. A graduation cap icon is placed beside it, giving it an academic identity and making the website look credible and thoughtful.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">3. Navigation Links</div>
+      <p>The navigation bar contains links to all major pages: Home, About Me, Projects, Academic Planner, and Contact. The active page receives a gold highlight so users always know where they are.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">4. Hero Text Box</div>
+      <p>The left side contains the hero content: a badge, a large heading, the personal name, and a short introduction. This part clearly communicates who the person is and what the portfolio stands for.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">5. Role Badge</div>
+      <p>The badge says “Software Engineering Student.” It is a rounded pill with a pale yellow background, which visually separates the role from the rest of the text and adds a professional academic feel.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">6. Intro Paragraph</div>
+      <p>The paragraph describes the student’s interest in software development and scalable systems. It adds a personal and professional description that explains the motivation behind the project.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">7. Primary and Secondary Buttons</div>
+      <p>The action buttons use strong primary/secondary styling. The primary dark navy button is more prominent, while the secondary transparent button creates a visual balance and still feels clean and professional.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">8. Profile Image</div>
+      <p>The image is displayed in a circular crop with a gold outline and a soft shadow. It creates a more personal connection and reinforces the portfolio’s “about me” feel.</p>
+    </div>
+
+    <div class="card">
+      <div class="label">9. Footer</div>
+      <p>The footer remains simple but professional. It gives ownership and branding to the site, keeping the page complete without overwhelming the user.</p>
+    </div>
+
+    <h2>3. Design meaning and user experience</h2>
+    <div class="card">
+      <p>The design uses a navy-and-gold color scheme to suggest confidence, professionalism, and academic excellence. The white background provides clean spacing and helps the content stand out. The layout is modern, eye-catching, and easy to navigate, which is suitable for a school portfolio or personal project website.</p>
+    </div>
+
+    <h2>4. Summary</h2>
+    <div class="card">
+      <p>The homepage is designed to communicate a strong personal brand quickly. It introduces the student, explains the purpose of the portfolio, gives quick navigation, and encourages visitors to explore projects or get in touch. The overall structure is simple, professional, and visually balanced.</p>
+    </div>
+
+    <div class="footer-note">This document is prepared for printing/exporting to PDF. Open this page in a browser and choose Print → Save as PDF.</div>
+  </div>
+</body>
+</html>
