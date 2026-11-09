@@ -167,7 +167,8 @@ function handleAddSchedule() {
         id: "_" + Math.random().toString(36).substr(2, 9),
         time: timeVal,
         category: categoryVal,
-        description: descVal
+        description: descVal,
+        completed: false // Track completion status
     };
 
     if (!tasks[dateVal]) {
@@ -185,6 +186,17 @@ function handleAddSchedule() {
     renderCalendar();
     renderTasks();
 }
+
+window.toggleScheduleStatus = function(id) {
+    if (!tasks[selectedDate]) return;
+
+    const schedule = tasks[selectedDate].find(item => item.id === id);
+    if (schedule) {
+        schedule.completed = !schedule.completed;
+        saveTasks();
+        renderTasks();
+    }
+};
 
 window.deleteSchedule = function(id) {
     if (!tasks[selectedDate]) return;
@@ -211,13 +223,14 @@ function renderTasks() {
 
     schedulesForDate.forEach(item => {
         const li = document.createElement("li");
-        li.className = "task-item";
+        li.className = `task-item ${item.completed ? 'completed' : ''}`;
 
         const categoryClass = item.category.toLowerCase().replace(/\s+/g, '-');
 
         li.innerHTML = `
             <div class="task-info">
                 <div class="task-meta">
+                    <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleScheduleStatus('${item.id}')" title="Mark as done" style="margin-right: 8px; cursor: pointer;">
                     <span class="task-time"><i class="fa-regular fa-clock"></i> ${item.time}</span>
                     <span class="badge ${categoryClass}">${item.category}</span>
                 </div>
