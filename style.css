@@ -438,26 +438,26 @@ header {
     padding: 3rem 1.5rem 4rem;
 }
 
-   .calender-header {
+   .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 }
 
-.calender-header h2 {
+.calendar-header h2 {
     color: var(--primary-color);
     font-size: 1.5rem;
 }
 
-.calender-nav-btn {
+.calendar-nav-btn {
     background-color: var(--bg-light);
     color: var(--primary-color);
     padding: 0.4rem 0.8rem;
     border: 1px solid #cbd5e1;
 }
 
-.calender-nav-btn:hover {
+.calendar-nav-btn:hover {
     background-color: var(--accent-color);
     color: var(--primary-color);
 }
