@@ -673,8 +673,7 @@ header {
     background-color: var(--navy-700);
 }
 
-/* Feedback message box (filled by contact.js) */
-.feedback-box {
+.get-in-touch-box {
     padding: 0.9rem 1.1rem;
     margin-bottom: 1.25rem;
     border-radius: 8px;
@@ -682,13 +681,13 @@ header {
     border: 1px solid var(--line);
 }
 
-.feedback-box.success {
+.get in-touch-box.success {
     color: #14532d;
     background-color: #e3f6e9;
     border-color: #9bd3ae;
 }
 
-.feedback-box.error {
+.get-in-touch-box.error {
     color: #7f1d1d;
     background-color: #fde8e8;
     border-color: #f0b4b4;
